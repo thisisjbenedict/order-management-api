@@ -1,5 +1,6 @@
 package com.jb.ordermanagement.service;
 
+import com.jb.ordermanagement.dto.CreateOrderRequest;
 import com.jb.ordermanagement.entity.Orders;
 import com.jb.ordermanagement.enums.OrderStatus;
 import com.jb.ordermanagement.repository.OrderRepository;
@@ -19,13 +20,14 @@ public class OrderService {
         this.orderRepository = orderRepository;
     }
 
-    public Orders createOrder(Orders order) {
+    public Orders createOrder(CreateOrderRequest request) {
 
-        order.setCreatedAt(LocalDateTime.now());
-
-        if (order.getStatus() == null) {
-            order.setStatus(OrderStatus.CREATED);
-        }
+        Orders order = Orders.builder()
+                .customerName(request.getCustomerName())
+                .amount(request.getAmount())
+                .status(OrderStatus.CREATED)
+                .createdAt(LocalDateTime.now())
+                .build();
 
         return orderRepository.save(order);
     }

@@ -1,9 +1,11 @@
 package com.jb.ordermanagement.controller;
 
+import com.jb.ordermanagement.dto.CreateOrderRequest;
 import com.jb.ordermanagement.entity.Orders;
 import com.jb.ordermanagement.enums.OrderStatus;
 import com.jb.ordermanagement.service.OrderService;
 import org.springframework.web.bind.annotation.*;
+import jakarta.validation.Valid;
 
 import java.util.List;
 import java.util.UUID;
@@ -18,8 +20,8 @@ public class OrderController {
     }
 
     @PostMapping
-    public Orders createOrder(@RequestBody Orders order){
-        return orderService.createOrder(order);
+    public Orders createOrder(@RequestBody @Valid CreateOrderRequest request){
+        return orderService.createOrder(request);
     }
 
     @GetMapping
