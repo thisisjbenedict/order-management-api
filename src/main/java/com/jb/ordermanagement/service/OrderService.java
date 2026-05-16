@@ -5,7 +5,11 @@ import com.jb.ordermanagement.entity.Orders;
 import com.jb.ordermanagement.enums.OrderStatus;
 import com.jb.ordermanagement.repository.OrderRepository;
 import org.hibernate.query.Order;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.PageRequest;
 
 import java.time.LocalDateTime;
 import java.util.List;
@@ -20,6 +24,12 @@ public class OrderService {
         this.orderRepository = orderRepository;
     }
 
+    public Page<Orders> getOrders(int page, int size){
+        Pageable pageable = PageRequest.of(page, size, Sort.by("customerName").ascending());
+
+        return orderRepository.findAll(pageable);
+    }
+
     public Orders createOrder(CreateOrderRequest request) {
 
         Orders order = Orders.builder()
@@ -30,10 +40,6 @@ public class OrderService {
                 .build();
 
         return orderRepository.save(order);
-    }
-
-    public List<Orders> getAllOrders() {
-        return orderRepository.findAll();
     }
 
     public Orders updateStatus(UUID id, OrderStatus status) {

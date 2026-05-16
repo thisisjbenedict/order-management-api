@@ -4,7 +4,10 @@ import com.jb.ordermanagement.dto.CreateOrderRequest;
 import com.jb.ordermanagement.entity.Orders;
 import com.jb.ordermanagement.enums.OrderStatus;
 import com.jb.ordermanagement.service.OrderService;
+
 import org.springframework.web.bind.annotation.*;
+import org.springframework.data.domain.Page;
+
 import jakarta.validation.Valid;
 
 import java.util.List;
@@ -25,8 +28,11 @@ public class OrderController {
     }
 
     @GetMapping
-    public List<Orders> getAllOrders() {
-        return orderService.getAllOrders();
+    public Page<Orders> getOrders(
+            @RequestParam(defaultValue = "0") int page,
+            @RequestParam(defaultValue = "5") int size
+    ){
+        return orderService.getOrders(page, size);
     }
 
     @PutMapping("/{id}/status")
